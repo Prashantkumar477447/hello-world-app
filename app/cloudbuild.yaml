@@ -1,9 +1,23 @@
 steps:
+  # Step 1: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/prashant-474308/hello-world-repo', '.']
+    args:
+      [
+        'build',
+        '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA',
+        '.'
+      ]
 
+  # Step 2: Push Docker image to Artifact Registry
+  - name: 'gcr.io/cloud-builders/docker'
+    args:
+      [
+        'push',
+        'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
+      ]    
 images:
-  - 'gcr.io/prashant-474308/hello-world-repo'
+  - 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
 
+# ✅ Fix for logging / service account error
 options:
   logging: CLOUD_LOGGING_ONLY

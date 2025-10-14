@@ -1,9 +1,9 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    args: ['build', '-t', 'gcr.io/$PROJECT_ID/hello-world-app', '.']
+    args: ['build', '-t', 'gcr.io/prashant-474308/hello-world-app', '.']
 
 images:
-  - 'gcr.io/$PROJECT_ID/hello-world-app'
+  - 'gcr.io/prashant-474308/hello-world-app'
 
 options:
   logging: CLOUD_LOGGING_ONLY

@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: hello-world-app
-          image: placeholder-image:tag  # This will be replaced by cloudbuild.yaml
+          image: IMAGE_PLACEHOLDER
           ports:
             - containerPort: 8080
 ---

@@ -17,24 +17,23 @@ steps:
         'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
       ]
 
-  # Step 3: Get credentials for GKE cluster
+  # Step 3: Authenticate kubectl to use your GKE cluster
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        gcloud container clusters get-credentials my-cluster-1 --region asia-south1 --project $PROJECT_ID
+        gcloud container clusters get-credentials my-cluster-1 \
+          --region asia-south1 \
+          --project $PROJECT_ID
 
-  # Step 4: Deploy to GKE using kubectl
+  # Step 4: Update image in manifest and deploy to GKE
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
     entrypoint: 'bash'
     args:
       - '-c'
       - |
-        # Replace image in deployment manifest (assuming it's k8s/deployment.yaml)
-        sed -i "s|image: .*|image: asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA|g" k8s/deployment.yaml
-        
-        # Apply deployment manifest
+        sed -i "s|IMAGE_PLACEHOLDER|asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA|g" k8s/deployment.yaml
         kubectl apply -f k8s/deployment.yaml
 
 images:

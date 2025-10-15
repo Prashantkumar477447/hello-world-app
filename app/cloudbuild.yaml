@@ -1,5 +1,5 @@
 steps:
-  # Step 1: Build Docker image
+  # Step 1: Build Dockerimage
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
@@ -7,6 +7,7 @@ steps:
         '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA',
         '-f', 'app/dockerfile',
         'app'
+        
       ]
 
   # Step 2: Push Docker image to Artifact Registry
@@ -15,32 +16,10 @@ steps:
       [
         'push',
         'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
-      ]
-
-  # Step 3: Authenticate kubectl with GKE cluster
-  - name: 'gcr.io/cloud-builders/gcloud'
-    entrypoint: 'bash'
-    args:
-      - '-c'
-      - |
-        gcloud container clusters get-credentials gke-nodejs-cluster \
-          --region=asia-south1 \
-          --project=$PROJECT_ID
-
-  # Step 4: Deploy or update image in GKE
-  - name: 'gcr.io/cloud-builders/kubectl'
-    args:
-      - 'set'
-      - 'image'
-      - 'deployment/hello-world'
-      - 'hello-world=asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
-    env:
-      - 'CLOUDSDK_COMPUTE_REGION=asia-south1'
-      - 'CLOUDSDK_CONTAINER_CLUSTER=gke-nodejs-cluster'
-
+      ]    
 images:
   - 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
 
-# ✅ Optional logging setting
+# ✅ Fix for logging / service account error
 options:
   logging: CLOUD_LOGGING_ONLY

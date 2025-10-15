@@ -1,13 +1,12 @@
 steps:
-  # Step 1: Build Dockerimage
+  # Step 1: Build Docker image
   - name: 'gcr.io/cloud-builders/docker'
     args:
       [
         'build',
         '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA',
-        '-f', 'app/dockerfile',
-        'app'
-        
+        '-f', 'dockerfile',
+        '.'
       ]
 
   # Step 2: Push Docker image to Artifact Registry
@@ -16,10 +15,30 @@ steps:
       [
         'push',
         'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
-      ]    
+      ]
+
+  # Step 3: Get credentials for GKE cluster
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        gcloud container clusters get-credentials my-cluster-1 --region asia-south1 --project $PROJECT_ID
+
+  # Step 4: Deploy to GKE using kubectl
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: 'bash'
+    args:
+      - '-c'
+      - |
+        # Replace image in deployment manifest (assuming it's k8s/deployment.yaml)
+        sed -i "s|image: .*|image: asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA|g" k8s/deployment.yaml
+        
+        # Apply deployment manifest
+        kubectl apply -f k8s/deployment.yaml
+
 images:
   - 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA'
 
-# ✅ Fix for logging / service account error
 options:
   logging: CLOUD_LOGGING_ONLY

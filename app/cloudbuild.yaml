@@ -6,7 +6,7 @@ steps:
         'build',
         '-t', 'asia-south1-docker.pkg.dev/$PROJECT_ID/hello-world-repo/testing:$COMMIT_SHA',
         '-f', 'dockerfile',
-        '.'
+        'app'
       ]
 
   # Step 2: Push Docker image to Artifact Registry

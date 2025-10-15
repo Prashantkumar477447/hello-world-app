@@ -4,7 +4,7 @@ const app = express();
 const PORT = process.env.PORT || 8080;
 
 app.get("/", (req, res) => {
-  res.send("<h1>Hello from GCP Cloud Run!</h1><p>Deployed using Cloud Build + Artifact Registry + Cloud Run (GUI Flow)</p>");
+  res.send("<h1>Hello from GCP Cloud Run!</h1><p>Deployed using Cloud Build + Artifact Registry + Cloud Run + Mayank SHarma  (GUI Flow)</p>");
 });
 
 app.listen(PORT, () => {

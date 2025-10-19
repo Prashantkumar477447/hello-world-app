@@ -1,4 +1,4 @@
-# 🚀 Deploy a Node.js App to Cloud Run with CI/CD 
+# 🚀 Deploy a Node.js App to Cloud Run with CI-CD 
 
 This project demonstrates how to **deploy a simple Node.js application** on **Google Cloud Run** with a **fully automated CI/CD pipeline** using **Cloud Build** and **Cloud Source Repositories/Github** — all configured **using the Google Cloud Console**.
 

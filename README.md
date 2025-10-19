@@ -33,6 +33,7 @@ Whenever you push code to the repository:
 ### 1. Create Node.js App
 
 Create a folder named `app` and add the following files:
+![WhatsApp Image 2025-10-15 at 14 38 17_c07b841c](https://github.com/user-attachments/assets/b4b527e3-e9e8-4f9f-aa91-b67b2f796100)
 
 ---
 
